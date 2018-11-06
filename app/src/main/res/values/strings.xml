@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">WaiterApp</string>
+    <string name="customers">Customers</string>
+    <string name="tables">Tables</string>
+</resources>
