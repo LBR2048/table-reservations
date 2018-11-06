@@ -11,10 +11,20 @@ class ClearReservationsWorker(context: Context, workerParameters: WorkerParamete
 
     override fun doWork(): Result {
         return try{
-            appDatabase.tablesDao().deleteAll()
+            clearAllReservations()
             Result.SUCCESS
         } catch (throwable: Throwable) {
             Result.FAILURE
+        }
+    }
+
+    // TODO add this method to a repository and test it
+    private fun clearAllReservations() {
+        val tables = appDatabase.tablesDao().getAllSync()
+        tables.map {
+            it.available = true
+            it.customerId = null
+            appDatabase.tablesDao().insert(it)
         }
     }
 }

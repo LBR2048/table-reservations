@@ -19,10 +19,10 @@ interface TablesDao {
     @Query("SELECT * FROM tables ORDER BY id")
     fun getAll(): LiveData<List<Table>>
 
+    @Query("SELECT * FROM tables ORDER BY id")
+    fun getAllSync(): List<Table>
+
     @Query("SELECT * FROM tables WHERE customerId = :customerId")
     fun getTablesByCustomerSync(customerId: Int): List<Table>
 
-    // TODO only erase customerId column instead of deleting whole table
-    @Query("DELETE FROM tables")
-    fun deleteAll()
 }
