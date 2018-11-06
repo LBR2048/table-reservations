@@ -5,8 +5,11 @@ import androidx.room.Room
 import androidx.test.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4
 import com.example.leonardo.waiterapp.data.AppDatabase
-import com.example.leonardo.waiterapp.ui.customers.Customer
 import com.example.leonardo.waiterapp.data.getValue
+import com.example.leonardo.waiterapp.dummyCustomer1
+import com.example.leonardo.waiterapp.dummyCustomer2
+import com.example.leonardo.waiterapp.dummyCustomer3
+import com.example.leonardo.waiterapp.ui.customers.Customer
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.After
 import org.junit.Assert.assertThat
@@ -21,12 +24,6 @@ class CustomersDaoTest {
     private lateinit var database: AppDatabase
     private lateinit var customerDao: CustomersDao
 
-    // Given these customers to be used in all tests
-    private val customer1 = Customer(1, "First1", "Last1")
-    private val customer2 = Customer(2, "First2", "Last2")
-    private val customer3 = Customer(3, "First3", "Last3")
-    private val newCustomer3 = Customer(3, "First3New", "Last3New")
-
     @get:Rule var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Before fun createDatabase() {
@@ -40,14 +37,17 @@ class CustomersDaoTest {
     }
 
     @Test fun insertAndRetrieveCustomers() {
+        // Given
+        val newCustomer3 = Customer(3, "First3New", "Last3New")
+        val customers = listOf(dummyCustomer2, dummyCustomer1, dummyCustomer3, newCustomer3)
+
         // When
-        val customers = listOf(customer2, customer1, customer3, newCustomer3)
         customerDao.insertAll(customers)
-        val list = getValue(customerDao.getAll())
 
         // Then
-        assertThat(list[0], equalTo(customer1))
-        assertThat(list[1], equalTo(customer2))
-        assertThat(list[2], equalTo(customer3)) // customer3 should not have been replaced
+        val list = getValue(customerDao.getAll())
+        assertThat(list[0], equalTo(dummyCustomer1))
+        assertThat(list[1], equalTo(dummyCustomer2))
+        assertThat(list[2], equalTo(dummyCustomer3)) // dummyCustomer3 should not have been replaced
     }
 }

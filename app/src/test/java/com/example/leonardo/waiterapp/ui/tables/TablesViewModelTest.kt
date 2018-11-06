@@ -1,15 +1,15 @@
 package com.example.leonardo.waiterapp.ui.tables
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.example.leonardo.waiterapp.MyApplication
 import com.example.leonardo.waiterapp.data.tables.TablesRepository
+import com.example.leonardo.waiterapp.dummyTables
+import com.example.leonardo.waiterapp.getDummyLiveTables
 import com.example.leonardo.waiterapp.mock
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito.*
-import java.util.*
 
 class TablesViewModelTest {
 
@@ -22,13 +22,9 @@ class TablesViewModelTest {
 
     @Test fun getTables() {
         // Given
-        val table1 = Table(1, true)
-        val table2 = Table(2, false)
-        val table3 = Table(3, false, 4)
-        val tables = listOf(table1, table2, table3)
-        val dummyLiveTables = MutableLiveData<List<Table>>()
-        dummyLiveTables.postValue(tables)
-        `when`(repository.getTables()).thenReturn(dummyLiveTables)
+        val tables = dummyTables
+        val liveTables = getDummyLiveTables()
+        `when`(repository.getTables()).thenReturn(liveTables)
 
         // When
         viewModel.tables

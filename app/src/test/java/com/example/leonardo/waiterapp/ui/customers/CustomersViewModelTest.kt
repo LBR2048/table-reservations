@@ -1,10 +1,11 @@
 package com.example.leonardo.waiterapp.ui.customers
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.example.leonardo.waiterapp.MyApplication
 import com.example.leonardo.waiterapp.data.customers.CustomersRepository
+import com.example.leonardo.waiterapp.dummyCustomers
+import com.example.leonardo.waiterapp.getDummyLiveCustomers
 import com.example.leonardo.waiterapp.mock
 import org.junit.Rule
 import org.junit.Test
@@ -21,13 +22,9 @@ class CustomersViewModelTest {
 
     @Test fun getCustomers() {
         // Given
-        val customer1 = Customer(1, "firstName1", "lastName1")
-        val customer2 = Customer(1, "firstName2", "lastName2")
-        val customer3 = Customer(1, "firstName3", "lastName3")
-        val customers = listOf(customer1, customer2, customer3)
-        val dummyLiveTables = MutableLiveData<List<Customer>>()
-        dummyLiveTables.postValue(customers)
-        `when`(repository.getCustomers()).thenReturn(dummyLiveTables)
+        val customers = dummyCustomers
+        val liveCustomers = getDummyLiveCustomers()
+        `when`(repository.getCustomers()).thenReturn(liveCustomers)
 
         // When
         viewModel.customers

@@ -22,6 +22,16 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
     }
+    sourceSets {
+        // https://blog.danlew.net/2015/11/02/sharing-code-between-unit-tests-and-instrumentation-tests-on-android/
+        String sharedTestDir = 'src/sharedTest/java'
+        test {
+            java.srcDir sharedTestDir
+        }
+        androidTest {
+            java.srcDir sharedTestDir
+        }
+    }
 }
 
 ext {
