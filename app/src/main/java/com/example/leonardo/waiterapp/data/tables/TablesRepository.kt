@@ -2,7 +2,6 @@ package com.example.leonardo.waiterapp.data.tables
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.leonardo.waiterapp.data.AppDatabase
 import com.example.leonardo.waiterapp.data.LoadingState
 import com.example.leonardo.waiterapp.data.Webservice
 import com.example.leonardo.waiterapp.ui.tables.Table
@@ -13,7 +12,7 @@ import java.util.*
 import java.util.concurrent.Executors
 
 class TablesRepository(
-        private val appDatabase: AppDatabase,
+        private val tablesDao: TablesDao,
         private val webservice: Webservice) {
 
     var state = MutableLiveData<LoadingState>()
@@ -53,12 +52,12 @@ class TablesRepository(
 
     private fun saveTablesToLocalSource(tables: List<Table>) {
         executor.execute {
-            appDatabase.tablesDao().insertAll(tables)
+            tablesDao.insertAll(tables)
         }
     }
 
     private fun getTablesFromLocalSource(): LiveData<List<Table>> {
-        return appDatabase.tablesDao().getAll()
+        return tablesDao.getAll()
     }
 
     fun makeReservation(table: Table, customerId: Int) {
@@ -69,17 +68,17 @@ class TablesRepository(
             // Create new reservation for customer
             table.available = false
             table.customerId = customerId
-            appDatabase.tablesDao().insert(table)
+            tablesDao.insert(table)
         }
     }
 
     fun removeReservation(customerId: Int) {
         executor.execute {
-            val tablesByCustomer = appDatabase.tablesDao().getTablesByCustomerSync(customerId)
+            val tablesByCustomer = tablesDao.getTablesByCustomerSync(customerId)
             tablesByCustomer.map {
                 it.available = true
                 it.customerId = null
-                appDatabase.tablesDao().insert(it)
+                tablesDao.insert(it)
             }
         }
     }

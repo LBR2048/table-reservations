@@ -11,30 +11,26 @@ import com.example.leonardo.waiterapp.ui.tables.TablesViewModelFactory
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.mock.BehaviorDelegate
-import retrofit2.mock.MockRetrofit
 
 object InjectorUtils {
 
-    fun provideCustomerViewModelFactory(
-            application: Application
-    ): CustomersViewModelFactory {
+    fun provideCustomerViewModelFactory(application: Application): CustomersViewModelFactory {
         return CustomersViewModelFactory(application, getCustomersRepository(application))
     }
 
-    fun provideTablesViewModelFactory(
-            application: Application
-    ): TablesViewModelFactory {
+    fun provideTablesViewModelFactory(application: Application): TablesViewModelFactory {
         return TablesViewModelFactory(application, getTablesRepository(application))
     }
 
-    private fun getCustomersRepository(context: Context) : CustomersRepository {
-        return CustomersRepository(AppDatabase.getInstance(context), getWebservice())
+    private fun getCustomersRepository(context: Context): CustomersRepository {
+        return CustomersRepository(getDatabaseInstance(context).customerDao(), getWebservice())
     }
 
-    private fun getTablesRepository(context: Context) : TablesRepository {
-        return TablesRepository(AppDatabase.getInstance(context), getWebservice())
+    private fun getTablesRepository(context: Context): TablesRepository {
+        return TablesRepository(getDatabaseInstance(context).tablesDao(), getWebservice())
     }
+
+    private fun getDatabaseInstance(context: Context) = AppDatabase.getInstance(context)
 
     private fun getWebservice(): Webservice {
         val baseUrl = "https://s3-eu-west-1.amazonaws.com/quandoo-assessment/"

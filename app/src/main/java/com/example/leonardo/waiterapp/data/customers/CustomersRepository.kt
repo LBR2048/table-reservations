@@ -2,7 +2,6 @@ package com.example.leonardo.waiterapp.data.customers
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.leonardo.waiterapp.data.AppDatabase
 import com.example.leonardo.waiterapp.data.LoadingState
 import com.example.leonardo.waiterapp.data.Webservice
 import com.example.leonardo.waiterapp.ui.customers.Customer
@@ -11,8 +10,9 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.concurrent.Executors
 
-class CustomersRepository(private val appDatabase: AppDatabase,
-                          private val webService: Webservice) {
+class CustomersRepository(
+        private val customersDao: CustomersDao,
+        private val webService: Webservice) {
 
     var state = MutableLiveData<LoadingState>()
     private val executor = Executors.newSingleThreadExecutor()
@@ -43,11 +43,11 @@ class CustomersRepository(private val appDatabase: AppDatabase,
 
     private fun saveCustomersToLocalSource(customers: List<Customer>) {
         executor.execute {
-            appDatabase.customerDao().insertAll(customers)
+            customersDao.insertAll(customers)
         }
     }
 
     private fun getCustomersFromLocalSource(): LiveData<List<Customer>> {
-        return appDatabase.customerDao().getAll()
+        return customersDao.getAll()
     }
 }
