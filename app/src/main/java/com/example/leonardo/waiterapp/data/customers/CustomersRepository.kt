@@ -8,14 +8,14 @@ import com.example.leonardo.waiterapp.ui.customers.Customer
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.concurrent.Executors
+import java.util.concurrent.Executor
 
 class CustomersRepository(
         private val customersDao: CustomersDao,
-        private val webService: Webservice) {
+        private val webService: Webservice,
+        private val executor: Executor) {
 
     var state = MutableLiveData<LoadingState>()
-    private val executor = Executors.newSingleThreadExecutor()
 
     fun getCustomers(): LiveData<List<Customer>> {
         getCustomersFromRemoteSource()

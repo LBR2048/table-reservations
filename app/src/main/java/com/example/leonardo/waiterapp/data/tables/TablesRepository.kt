@@ -9,16 +9,14 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
-import java.util.concurrent.Executors
+import java.util.concurrent.Executor
 
 class TablesRepository(
         private val tablesDao: TablesDao,
-        private val webservice: Webservice) {
+        private val webservice: Webservice,
+        private val executor: Executor) {
 
     var state = MutableLiveData<LoadingState>()
-
-    // TODO Executor is the best approach? Should it be injected?
-    private val executor = Executors.newSingleThreadExecutor()
 
     fun getTables(): LiveData<List<Table>> {
         getTablesFromRemoteSource()

@@ -11,6 +11,7 @@ import com.example.leonardo.waiterapp.ui.tables.TablesViewModelFactory
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.Executors
 
 object InjectorUtils {
 
@@ -23,11 +24,11 @@ object InjectorUtils {
     }
 
     private fun getCustomersRepository(context: Context): CustomersRepository {
-        return CustomersRepository(getDatabaseInstance(context).customerDao(), getWebservice())
+        return CustomersRepository(getDatabaseInstance(context).customerDao(), getWebservice(), executor)
     }
 
     private fun getTablesRepository(context: Context): TablesRepository {
-        return TablesRepository(getDatabaseInstance(context).tablesDao(), getWebservice())
+        return TablesRepository(getDatabaseInstance(context).tablesDao(), getWebservice(), executor)
     }
 
     private fun getDatabaseInstance(context: Context) = AppDatabase.getInstance(context)
@@ -46,4 +47,5 @@ object InjectorUtils {
         return retrofit.create(Webservice::class.java)
     }
 
+    private val executor = Executors.newSingleThreadExecutor()
 }
