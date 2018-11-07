@@ -22,15 +22,16 @@ class CustomersRepository(
         return getCustomersFromLocalSource()
     }
 
-    private fun getCustomersFromRemoteSource(): LiveData<List<Customer>> {
+    private fun getCustomersFromRemoteSource() {
         state.value = LoadingState.LOADING
-        val data = MutableLiveData<List<Customer>>()
+
         webService.getCustomers().enqueue(object : Callback<List<Customer>> {
             override fun onResponse(call: Call<List<Customer>>, response: Response<List<Customer>>) {
                 state.value = LoadingState.SUCCESS
-                data.value = response.body()
-                data.value?.let {
-                    saveCustomersToLocalSource(it)
+
+                val customers = response.body()
+                if (customers != null) {
+                    saveCustomersToLocalSource(customers)
                 }
             }
 
@@ -38,7 +39,6 @@ class CustomersRepository(
                 state.value = LoadingState.FAILURE
             }
         })
-        return data
     }
 
     private fun saveCustomersToLocalSource(customers: List<Customer>) {

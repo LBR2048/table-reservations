@@ -23,21 +23,16 @@ class TablesRepository(
         return getTablesFromLocalSource()
     }
 
-    private fun getTablesFromRemoteSource(): LiveData<List<Table>> {
+    private fun getTablesFromRemoteSource() {
         state.value = LoadingState.LOADING
-        var tableId = 0
-        val tables = ArrayList<Table>()
 
-        val data = MutableLiveData<List<Table>>()
         webservice.getTables().enqueue(object : Callback<List<Boolean>> {
             override fun onResponse(call: Call<List<Boolean>>, response: Response<List<Boolean>>) {
                 state.value = LoadingState.SUCCESS
-                response.body()?.map {
-                    tables.add(Table(tableId++, it, null))
-                }
-                data.value = tables
-                data.value?.let {
-                    saveTablesToLocalSource(it)
+
+                val body = response.body()
+                if (body != null) {
+                    saveTablesToLocalSource(booleansToTables(body))
                 }
             }
 
@@ -45,7 +40,6 @@ class TablesRepository(
                 state.value = LoadingState.FAILURE
             }
         })
-        return data
     }
 
     private fun saveTablesToLocalSource(tables: List<Table>) {
@@ -56,6 +50,17 @@ class TablesRepository(
 
     private fun getTablesFromLocalSource(): LiveData<List<Table>> {
         return tablesDao.getAll()
+    }
+
+    private fun booleansToTables(booleans: List<Boolean>): List<Table> {
+        var tableId = 0
+        val tables = ArrayList<Table>()
+
+        booleans.map {
+            tables.add(Table(tableId++, it, null))
+        }
+
+        return tables
     }
 
     fun makeReservation(table: Table, customerId: Int) {
