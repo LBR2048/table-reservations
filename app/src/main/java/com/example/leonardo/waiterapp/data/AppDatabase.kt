@@ -1,24 +1,20 @@
 package com.example.leonardo.waiterapp.data
 
+import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import android.content.Context
 import com.example.leonardo.waiterapp.data.customers.CustomersDao
-import com.example.leonardo.waiterapp.data.reservations.Reservation
-import com.example.leonardo.waiterapp.data.reservations.ReservationsDao
 import com.example.leonardo.waiterapp.data.tables.TablesDao
 import com.example.leonardo.waiterapp.ui.customers.Customer
 import com.example.leonardo.waiterapp.ui.tables.Table
 
-@Database(entities = [Customer::class, Table::class, Reservation::class], version = 1)
+@Database(entities = [Customer::class, Table::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun customerDao(): CustomersDao
 
     abstract fun tablesDao(): TablesDao
-
-    abstract fun reservationsDao(): ReservationsDao
 
     companion object {
 
