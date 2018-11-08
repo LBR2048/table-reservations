@@ -20,9 +20,22 @@ val dummyTable1 = Table(1, true)
 val dummyTable2 = Table(2, false)
 val dummyTable3 = Table(3, false)
 val dummyTables = listOf(dummyTable1, dummyTable3, dummyTable2)
+val emptyTableList: List<Table> = emptyList()
 
 fun getDummyLiveTables(): LiveData<List<Table>> {
     val liveTables = MutableLiveData<List<Table>>()
     liveTables.postValue(dummyTables)
     return liveTables
+}
+
+fun getEmptyLiveTables(): LiveData<List<Table>> {
+    return MutableLiveData()
+}
+
+private val booleans = listOf(true, true, true, false, false)
+
+fun getDummyLiveBooleans(): LiveData<List<Boolean>> {
+    val dummyLiveBooleans = MutableLiveData<List<Boolean>>()
+    dummyLiveBooleans.postValue(booleans)
+    return dummyLiveBooleans
 }
