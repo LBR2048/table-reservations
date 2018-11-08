@@ -35,5 +35,7 @@ class CustomersViewModelTest {
         val observer = mock<Observer<List<Customer>>>()
         viewModel.customers.observeForever(observer)
         verify(observer).onChanged(customers)
+
+        // TODO make verifications regarding the loading state
     }
 }

@@ -9,6 +9,8 @@ import com.example.leonardo.waiterapp.data.tables.TablesDao
 import com.example.leonardo.waiterapp.ui.customers.Customer
 import com.example.leonardo.waiterapp.ui.tables.Table
 
+// TODO In a future version add a reservations table associating keys from
+// tables and customers
 @Database(entities = [Customer::class, Table::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
 

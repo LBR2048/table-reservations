@@ -1,12 +1,10 @@
 package com.example.leonardo.waiterapp.ui.tables
 
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.example.leonardo.waiterapp.R
-
 import kotlinx.android.synthetic.main.fragment_customer_item.view.*
 
 class TablesAdapter(
@@ -30,7 +28,6 @@ class TablesAdapter(
         return ViewHolder(view)
     }
 
-    // TODO not efficient, reading all tables when only one or two was modified
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
         with(holder.tableNumberView) {
@@ -59,7 +56,7 @@ class TablesAdapter(
         }
     }
 
-    // TODO inefficient. Use Diffutil? See sunflower
+    // TODO Use Diffutil. I tried, but the adapter did not update correctly
     fun replaceCustomers(tables: List<Table>) {
         values.apply {
             clear()

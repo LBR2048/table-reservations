@@ -34,6 +34,8 @@ class TablesViewModelTest {
         val observerTables = mock<Observer<List<Table>>>()
         viewModel.tables.observeForever(observerTables)
         verify(observerTables).onChanged(tables)
+
+        // TODO make verifications regarding the loading state
     }
 
     @Test fun selectAvailableTable() {
